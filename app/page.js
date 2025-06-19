@@ -1,6 +1,30 @@
 "use client";
 
+import { useEffect } from "react";
+
 export default function Home() {
+
+  // Check if all services are healthy
+  // Coz render is not starting services automatically
+  useEffect(() => {
+    const services = [
+      'https://user-service-yomu.onrender.com',
+      'https://auth-service-efev.onrender.com',
+      'https://bill-service-6fnu.onrender.com'
+    ];
+
+    services.forEach(url => {
+      fetch(url)
+        .then(res => {
+          console.log(`Pinged ${url}: ${res.status}`);
+        })
+        .catch(() => {
+          // Suppress known unreachable root path
+          console.log(`Pinged ${url}: service is waking up`);
+        });
+      });
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4">
       <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-8">
